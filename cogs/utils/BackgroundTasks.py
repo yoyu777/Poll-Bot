@@ -45,13 +45,16 @@ class BackgroundTasks:
 		    j+=reactions[i]
 
 		if not j==0: #if only the bot has reactions, nothing gets sent
-		    plt.subplots(figsize = (9,6))
-		    plt.bar(final_options, reactions, width = 0.8, bottom = 0)
-		    plt.title(title, fontsize=27)
-		    plt.savefig('results.png')
-		    print(reactions)
-		    print(final_options)
-		    await channel.send('Results for a passed poll', file=discord.File('results.png'))
+			print("doing something")
+			plt.subplots(figsize = (9,6))
+			plt.bar(final_options, reactions, width = 0.8, bottom = 0)
+			plt.title(title, fontsize=27)
+			print("Should save")
+			plt.savefig('results.png')
+			print("saved")
+			print(reactions)
+			print(final_options)
+			await channel.send('Results for a passed poll', file=discord.File('results.png'))
 
 def setup(bot):
     bot.add_cog(BackgroundTasks(bot))
