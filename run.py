@@ -14,7 +14,8 @@ extensions = (
                 'cogs.strawpoll',
                 'cogs.meta',
                 'cogs.stats',
-                'cogs.owner'
+                'cogs.owner',
+                'cogs.utils.BackgroundTasks'
             )
 
 
@@ -29,7 +30,10 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if not message.author.bot:
-        await bot.process_commands(message)
+        if not "Direct Message with" in str(message.channel):
+            await bot.process_commands(message)
+        else:
+            print("Someone tried to do commands in a private message")
 
 def main():
     for extension in extensions:

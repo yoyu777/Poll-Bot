@@ -1,6 +1,6 @@
 import discord
 import asyncio
-# from cogs.utils.Database import Database
+from cogs.utils.Database import Database
 from datetime import datetime, timedelta
 
 
@@ -9,7 +9,7 @@ class Poll:
     def __init__(self, bot):
         self.bot = bot
 
-        # self.database = Database("sample_db", "finn", "localhost")
+        self.database = Database("sample_db", "finn", "localhost")
 
         # there is probably a better way to do this
         self.emojiLetters = ["\N{REGIONAL INDICATOR SYMBOL LETTER A}", "\N{REGIONAL INDICATOR SYMBOL LETTER B}",
@@ -88,7 +88,7 @@ class Poll:
                                 final_options.append(choice)
                                 await pollMessage.add_reaction(self.emojiLetters[i])
                             i += 1
-                        """
+                        print(final_options)
                         if "+duration" in message.content:
                             messageWords = message.content.split(' ')
                             for i in messageWords:
@@ -97,31 +97,8 @@ class Poll:
                             time = time.split(":")
                             hours = int(time[0])
                             minutes = int(time[1])
-                            endTime = str(datetime.now() + timedelta(hours = hours, minutes = minutes))[0:16]
-                            print(pollMessage.id)
-                            self.database.createPoll(int(pollMessage.id), endTime)
-
-                            timeSeconds = int(time[0]) * 60 * 60 + int(time[1]) * 60
-                            await asyncio.sleep(timeSeconds)
-                            pollMessage = await pollMessage.channel.get_message(pollMessage.id)
-                            reactions = []
-                            for reaction in pollMessage.reactions:
-                                async for user in reaction.users():
-                                    if user == self.bot.user:
-                                        reactions.append(reaction.count - 1)
-                            j = 0
-                            for i in range(len(reactions)):
-                                j+=reactions[i]
-
-                            if not j==0: #if only the ot has reactions, nothing gets sent
-                                plt.subplots(figsize(9,6))
-                                plt.bar(final_options, reactions, width = 0.8, bottom = 0)
-                                plt.title(title, fontsize=27)
-                                plt.savefig('results.png')
-                                print(reactions)
-                                print(final_options)
-                                await message.channel.send('Results for a passed poll created by: <@' + str(message.author.id) + ">", file=discord.File('results.png'))
-                    """
+                            endTime = str(datetime.utcnow() + timedelta(hours = hours, minutes = minutes))[0:16]
+                            self.database.createPoll(int(pollMessage.id), int(pollMessage.channel.id), endTime, int(pollMessage.guild.id), final_options, title)
                     except KeyError:
                         return "Please make sure you are using the format 'poll: {title} [Option1] [Option2] [Option 3]'"
             else:
