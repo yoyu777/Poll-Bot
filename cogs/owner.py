@@ -44,12 +44,13 @@ class Owner:
 			await ctx.send('**`SUCCESS`**')
 
 	# Check how many unclaimed premium servers a user has and total # of premium servers they have purchased
-	# NOT IMPLEMENTED
 	@commands.command(name="checkpremium")
 	@commands.is_owner()
 	async def checkpremium(self, ctx):
-		print("+checkpremium [user_id]")
-		emb1 = discord.Embed(description="checkpremium")
+		message = ctx.message.content
+		userID = message.split(" ")[1]
+		self.database.checkPremium(userID)
+		emb1 = discord.Embed(description=self.database.checkPremium(userID))
 		await ctx.message.channel.send(embed=emb1)
 
 	# Adds the number of premium servers a user bought to the database
@@ -66,12 +67,13 @@ class Owner:
 		await ctx.message.channel.send(embed=emb1)
 
 	# Gives a server of a user's request premium if they have any unclaimed premium servers
-	# NOT IMPLEMENTED
 	@commands.command(name="addpremiumserver")
 	@commands.is_owner()
 	async def addpremiumserver(self, ctx):
-		print("+addpremiumserver [server_id] [user_id]")
-		emb1 = discord.Embed(description="addpremiumservers")
+		message = ctx.message.content
+		userID = message.split(" ")[1]
+		serverIDToAdd = message.split(" ")[2]
+		emb1 = discord.Embed(description=self.database.addPremiumServer(userID, serverIDToAdd))
 		await ctx.message.channel.send(embed=emb1)
 
 	# Changes one of the user's premium servers to another server
