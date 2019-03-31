@@ -44,6 +44,7 @@ class Owner:
 			await ctx.send('**`SUCCESS`**')
 
 	# Check how many unclaimed premium servers a user has and total # of premium servers they have purchased
+	# Format: +checkpremium {userID}
 	@commands.command(name="checkpremium")
 	@commands.is_owner()
 	async def checkpremium(self, ctx):
@@ -54,6 +55,7 @@ class Owner:
 		await ctx.message.channel.send(embed=emb1)
 
 	# Adds the number of premium servers a user bought to the database
+	# Format: +addpremium {userID} {numServersPurchased}
 	@commands.command(name="addpremium")
 	@commands.is_owner()
 	async def addpremium(self, ctx):
@@ -61,12 +63,11 @@ class Owner:
 		message = ctx.message.content
 		userID = message.split(" ")[1]
 		numServersPurchased = message.split(" ")[2]
-		self.database.addPremium(userID, numServersPurchased)
-		confirmationMessage = "Added " + numServersPurchased + " server(s) to user " + userID
-		emb1 = discord.Embed(description=confirmationMessage)
+		emb1 = discord.Embed(description=self.database.addPremium(userID, numServersPurchased))
 		await ctx.message.channel.send(embed=emb1)
 
 	# Gives a server of a user's request premium if they have any unclaimed premium servers
+	# Format: +addpremiumserver {userID} {serverIDToAdd}
 	@commands.command(name="addpremiumserver")
 	@commands.is_owner()
 	async def addpremiumserver(self, ctx):
@@ -77,12 +78,17 @@ class Owner:
 		await ctx.message.channel.send(embed=emb1)
 
 	# Changes one of the user's premium servers to another server
+	# Format: +changepremium {userID} {previousServerID} {newServerID}
 	# NOT IMPLEMENTED
 	@commands.command(name="changepremium")
 	@commands.is_owner()
 	async def changepremium(self, ctx):
-		print("+changepremium [previous server_id], [new_server_id]")
-		emb1 = discord.Embed(description="changepremium")
+		message = ctx.message.content
+		userID = message.split(" ")[1]
+		previousServerID = message.split(" ")[2]
+		newServerID = message.split(" ")[3]
+		self.database.changePremium(userID, previousServerID, newServerID)
+		emb1 = discord.Embed(description=self.database.changePremium(userID, previousServerID, newServerID))
 		await ctx.message.channel.send(embed=emb1)
 
 def setup(bot):

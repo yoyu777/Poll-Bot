@@ -31,23 +31,26 @@ class Database:
 			purchased = previouslyPurchased + int(numServersPurchased)
 			self.cursor.execute("UPDATE premium SET serverspurchased = %s WHERE customer = %s;", (purchased, userID))
 			self.connection.commit()
-			print("servers added to count")
+			return "Added " + str(numServersPurchased) + " to user " + str(userID)
 		else:
 			self.cursor.execute("INSERT INTO premium VALUES (%s, %s, %s);", (userID, "{}", numServersPurchased))
 			self.connection.commit()
+			return "User " + str(userID) + " added to database and " + str(numServersPurchased) + " servers added to user."
 			print("User added to database, with %s premium servers purchased", numServersPurchased)
 
 	# Registers a premium server for a user. Check if a user has any unregistered servers using checkPremium
 	def addPremiumServer(self, userID, serverID):
 		self.cursor.execute("SELECT * FROM premium WHERE customer = '" +  userID + "';")
 		data = self.cursor.fetchall()
-		if data[0][1] != None:
+		if data != []:
 			print(data)
 			servers = data[0][1][1:-1].split(",")
+			print(servers)
 			if serverID in servers:
 				return "Server was already registered as a premium server for that user."
 			else:
 				servers.append(str(serverID))
+				servers.remove('')
 				print(serverID)
 				print(type(servers))
 				print(servers)
@@ -66,8 +69,35 @@ class Database:
 		data = self.cursor.fetchall()
 		
 		# If the user has already bought premium
-		if data is not None:
-			servers = data[0][1][1:-1].split(",") 
-			return str(userID) + " has purchased " + data[0][2] + " server(s) and has registered " + str(len(servers)) + " server(s)."
+		if data != []:
+				print(data)
+				print(type(data))
+				servers = data[0][1][1:-1].split(",") 
+				return str(userID) + " has purchased " + data[0][2] + " server(s) and has registered " + str(len(servers)-1) + " server(s)."
 		else:
 			return str(userID) + " has not purchased any premium servers."
+
+	# Switches the ids of servers
+	# This does not work yet
+	def changePremium(self, userID, previousServerID, newServerID):
+		self.cursor.execute("SELECT * FROM premium WHERE customer = '" +  userID + "';")
+		data = self.cursor.fetchall()
+
+		if data != []:
+			servers = data[0][1][1:-1].split(",") 
+			print(servers)
+			switched = False
+			for i in range(len(servers)):
+				# TODO: This if statement is not returning true when it should.
+				if servers[i] == str(previousServerID) and not switched:
+					print(servers[i])
+					print(newServerID)
+					servers[i] = newServerID
+					switched = True
+					print(servers)
+					self.cursor.execute("UPDATE premium SET server_ids = %s WHERE customer = %s;", (servers, userID))
+					print("got to here")
+					self.connection.commit()
+					return "Successfully removed server " + previousServerID + " and added " + newServerID + " for user " + userID 
+		else:
+			return str(userID) + " has not purchased any premium servers"
