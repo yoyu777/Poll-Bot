@@ -8,6 +8,9 @@ Video tutorials here:
 - Using Secret Manager to Manage Tokens: https://www.youtube.com/watch?v=wb4RU5rpooQ
 - Hosting a Poll Bot: https://www.youtube.com/watch?v=wUdZKMeLG4w
 
+## Known issue
+Currently, you need to change the version of secret you want to access in the code (if you are not using version 1). This can be improved. PR welcome. Thanks
+
 
 ## How to use Poll Bot
 Create a strawpoll by typing '+strawpoll {title} [Option1] [Option2] [Option 3]', with up to 26 options.
