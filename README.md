@@ -7,7 +7,7 @@ Video tutorials here:
 - Creating a Discord Bot on App Engine: https://www.youtube.com/watch?v=aczvOQ6S6sA
 - Using Secret Manager to Manage Tokens: https://www.youtube.com/watch?v=wb4RU5rpooQ
 - Hosting a Poll Bot: https://www.youtube.com/watch?v=wUdZKMeLG4w
-  (for code exactly the same as in this video: checkout this commit - https://github.com/yoyu777/Poll-Bot/commit/e0ec5a4b9315c7cda2bc1c2b2322f9e5797c7b5b)
+  (for code exactly the same as in this video: checkout this commit - https://github.com/yoyu777/Poll-Bot/tree/e0ec5a4b9315c7cda2bc1c2b2322f9e5797c7b5b)
 
 
 ## How to use Poll Bot
