@@ -1,5 +1,6 @@
 {
-	"discord_token" : "",
+    "project_id" : "discord-bot-demo-304514",
+    "secret_id":"discord-bot-token",
     "shards": {
         "count": 1,
         "first_shard_id": 0,
